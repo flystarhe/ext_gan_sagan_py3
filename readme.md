@@ -1,9 +1,7 @@
 # Low dose CT
+基于条件生成对抗网络的清晰度感知低剂量CT去噪,推荐阅读原项目[xinario/SAGAN](https://github.com/xinario/SAGAN).我仅仅修改了少量代码使支持Python3.
 
-## xinario/SAGAN
-基于条件生成对抗网络的清晰度感知低剂量CT去噪[sagan](https://github.com/xinario/SAGAN),如果你使用Python3可以克隆我贡献的分支[ext_gan_sagan_py3](https://github.com/flystarhe/ext_gan_sagan_py3).
-
-### Getting Started
+## Getting Started
 Install torch7:
 ```bash
 $ git clone https://github.com/torch/distro.git ~/torch --recursive
@@ -52,7 +50,7 @@ python pre_process.py -s 1 -i /data2/tmps/tmps/dicoms -o /data2/tmps/tmps/experi
 #all your test images would now be saved as uint16 png format inside folder `/data2/tmps/tmps/experiment`.
 #Arguement `-s 1` is to ensure the output images are stored in sequence.
 #note: in order to use the python script, make sure you have the follwing packages installed
-#opencv, pydicom==0.9.9, numpy, h5py
+#opencv, pydicom, numpy, h5py
 ```
 
 Test the model:
@@ -66,7 +64,7 @@ Display the result with a specific window:
 python post_process.py -w 'lung'  #lung, abdomen, bone, none
 ```
 
-Now you can view the result by open the html `file:results/SAGAN/latest_net_G_test/index.html`.
+Now you can view the result by open the html `results/SAGAN/latest_net_G_test/index.html`.
 
 ## paper
 - Sharpness-aware Low dose CT denoising using conditional generative adversarial network, [web](https://arxiv.org/abs/1708.06453v2)
