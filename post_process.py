@@ -16,7 +16,6 @@ def mkdir_p(path):
 			raise
 
 
-
 def get_window_size(window_type):
 	if window_type == 'lung':
 		center = -700;
@@ -29,7 +28,7 @@ def get_window_size(window_type):
 		width = 2000
 
 	return center, width
-	
+
 
 def transfer2window(input, window_type):
 	center, width = get_window_size(window_type)
@@ -38,15 +37,12 @@ def transfer2window(input, window_type):
 	dicom_raw = dicom_raw_tmp[:,:,1];
 	dicom_window = ((dicom_raw  -(center-0.5))/(width-1)+0.5)*255;
 
-
 	dicom_window[dicom_raw<=center-0.5-(width-1)/2] = 0;
 	dicom_window[dicom_raw>center-0.5+(width-1)/2] = 255;
 
 	dicom_window.astype(np.uint8)
 
 	return dicom_window
-
-
 
 
 parser = argparse.ArgumentParser(description='extract images from .h5 file')
@@ -73,19 +69,18 @@ target_root = os.path.join(result_root,  'target' );
 
 index_file = os.path.join(result_root,'index.html')
 
+
 mkdir_p(output_root)
 mkdir_p(input_root)
 mkdir_p(target_root)
 
 
-
 f = h5py.File(result_file_name, 'r')
+group_keys = list(f.keys())
 
 
-
-
-for i in xrange(len(f.keys())):
-	group_key = f.keys()[i]
+for i in range(len(group_keys)):
+	group_key = group_keys[i]
 	name_lists = group_key.split('_')
 
 	output_type = name_lists[1]
@@ -98,7 +93,6 @@ for i in xrange(len(f.keys())):
 	if opt['window_type'] != 'none':
 		img = transfer2window(img, opt['window_type'])
 
-
 	if output_type == 'output':
 		cv2.imwrite(os.path.join(output_root, filename), img)
 	elif output_type == 'target':
@@ -110,8 +104,8 @@ for i in xrange(len(f.keys())):
 with open(index_file, 'w') as the_file:
 	the_file.write('<table style="text-align:center;">\n')
 
-	for i in xrange(len(f.keys())/3):
-		group_key = f.keys()[i]
+	for i in range(len(group_keys)//3):
+		group_key = group_keys[i]
 		name_lists = group_key.split('_')
 		filename = name_lists[2]
 
@@ -120,17 +114,10 @@ with open(index_file, 'w') as the_file:
 		the_file.write('<td>' + filename + '</td>')
 		the_file.write('<td><img src="./input/' + filename + '"/></td>')
 		the_file.write('<td><img src="./target/' + filename + '"/></td>')
-		the_file.write('<td><img src="./output/' + filename +'"/></td>')
+		the_file.write('<td><img src="./output/' + filename + '"/></td>')
 		the_file.write('</tr>\n')
-
-
 
 	the_file.write('</table>')
 
-
-
 f.close()
-
-
-
 
