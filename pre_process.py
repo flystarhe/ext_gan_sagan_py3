@@ -54,13 +54,13 @@ for (dirpath, dirname, filelist) in os.walk(root):
 			# if ".dcm" in filename.lower():  # check whether the file's DICOM
 
 			dicom_raw = pydicom.read_file(os.path.join(dirpath,filename))
-			img_raw = dicom_raw.pixel_array
+			#img_raw = dicom_raw.pixel_array
+			img_raw = np.clip(dicom_raw.pixel_array, 0, None)
 
-			mask = img_raw == img_raw.min()
-			img_raw[mask] = 0
+			#mask = img_raw == img_raw.min()
+			#img_raw[mask] = 0
 
-			#assert(img_raw.min()>=0)
-			img_raw = img_raw - img_raw.min()
+			assert(img_raw.min()>=0)
 
 			img_out = np.array([np.tile(np.concatenate((img_raw,img_raw),axis=1), [1,1]) for i in range(3)])
 			img_out = np.transpose(img_out, [1,2,0])*22
